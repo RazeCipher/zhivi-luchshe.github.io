@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Живи лучше: учись разумно распоряжаться деньгами</title>
+<meta name="description" content="Финансовая грамотность для подростков и студентов от 15 лет: бюджет, разумные покупки, накопления и безопасность.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f7fb;
+  --card: #ffffff;
+  --ink: #0e1220;
+  --muted: #5a6075;
+  --line: #e4e5ef;
+  --accent: #5b4dff;
+  --accent-soft: #eceaff;
+  --lime: #c8f23d;
+  --good: #14935f;
+  --bad: #d4423a;
+  /* тёмные панели (callout, result) — раньше были захардкожены,
+     из-за этого в светлой теме не переключались. теперь переменные */
+  --panel: #0e1220;
+  --panel-ink: #eef0fa;
+  --panel-line: #262c45;
+  --radius: 22px;
+  --nav-h: 48px; /* высота плашки меню, нужна для scroll-padding */
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* тёмная тема: и системная, и ручная — одним блоком, без копипасты */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0e1a; --card: #151a2c; --ink: #eef0fa; --muted: #9aa1bb;
+    --line: #262c45; --accent: #9188ff; --accent-soft: #221f4d;
+    --good: #4fd19a; --bad: #ff7d74;
+    --panel: #151a2c; --panel-ink: #eef0fa; --panel-line: #2f3654;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b0e1a; --card: #151a2c; --ink: #eef0fa; --muted: #9aa1bb;
+  --line: #262c45; --accent: #9188ff; --accent-soft: #221f4d;
+  --good: #4fd19a; --bad: #ff7d74;
+  --panel: #151a2c; --panel-ink: #eef0fa; --panel-line: #2f3654;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 28px); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 17px/1.65 "Golos Text", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: "Unbounded", "Golos Text", sans-serif; line-height: 1.15; margin: 0; }
+h2 { font-size: clamp(1.9rem, 5vw, 3.1rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 28px; }
+h3 { font-size: 1.15rem; font-weight: 500; margin: 40px 0 14px; }
+p { margin: 0 0 1em; }
+a { color: inherit; }
+b, strong { font-weight: 600; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+.wrap { width: min(1080px, 100% - 40px); margin-inline: auto; }
+.prose { max-width: 720px; }
+
+/* --- навигация --- */
+.progress { position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 20; background: var(--lime); transform-origin: left; transform: scaleX(0); }
+.nav {
+  position: fixed; top: calc(14px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%);
+  z-index: 10; display: flex; gap: 4px; max-width: calc(100% - 24px); overflow-x: auto;
+  padding: 6px; border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 78%, transparent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--line); box-shadow: 0 8px 30px rgba(14, 18, 32, .12);
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav a { white-space: nowrap; text-decoration: none; font-size: .88rem; font-weight: 500; padding: 8px 14px; border-radius: 999px; color: var(--muted); transition: background .2s, color .2s; }
+.nav a:hover { color: var(--ink); background: var(--accent-soft); }
+.nav a.active { background: var(--ink); color: var(--bg); }
+
+/* --- обложка --- */
+.hero {
+  position: relative; overflow: hidden; color: #fff; background: #0b0e1a;
+  padding: 170px 0 110px;
+}
+.hero::before, .hero::after { content: ""; position: absolute; border-radius: 50%; filter: blur(80px); opacity: .55; }
+.hero::before { width: 520px; height: 520px; background: #5b4dff; top: -160px; right: -120px; }
+.hero::after { width: 380px; height: 380px; background: #14c98a; bottom: -180px; left: -100px; opacity: .35; }
+.hero .wrap { position: relative; z-index: 1; }
+.badge { display: inline-block; padding: 7px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); font-size: .9rem; margin-bottom: 28px; background: rgba(255,255,255,.06); }
+.hero h1 { font-size: clamp(2.3rem, 7.2vw, 5.2rem); font-weight: 700; letter-spacing: -0.03em; max-width: 13em; }
+.hero h1 span { color: var(--lime); }
+.hero .lead { font-size: 1.2rem; max-width: 36em; color: #cfd3e6; margin-top: 28px; }
+.hero .lead + .lead { margin-top: 0; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; padding: 16px 28px;
+  background: var(--lime); color: #0e1220; font-weight: 600; text-decoration: none; border-radius: 999px;
+  transition: transform .2s, box-shadow .2s;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(200, 242, 61, .35); }
+
+/* --- секции --- */
+section { padding: 96px 0; }
+.eyebrow { display: inline-block; font-family: "Unbounded", sans-serif; font-size: .8rem; color: var(--accent); background: var(--accent-soft); padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+.alt { background: var(--card); border-block: 1px solid var(--line); }
+
+.bento { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-top: 20px; }
+.tile { display: block; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; transition: transform .25s, border-color .25s; }
+.alt .tile { background: var(--bg); }
+.tile:hover { transform: translateY(-4px); border-color: var(--accent); }
+.tile .num { font-family: "Unbounded", sans-serif; font-size: .8rem; color: var(--accent); }
+.tile b { display: block; font-family: "Unbounded", sans-serif; font-weight: 500; font-size: 1.1rem; margin: 10px 0 8px; }
+.tile span { color: var(--muted); }
+
+.pair { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin: 8px 0 20px; }
+.box { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+.alt .box { background: var(--bg); }
+.box h3 { margin-top: 0; }
+.box p:last-child { margin-bottom: 0; }
+
+.term { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin: 20px 0; }
+.term .box b { font-family: "Unbounded", sans-serif; font-weight: 500; display: block; margin-bottom: 8px; color: var(--accent); }
+
+.callout {
+  margin: 36px 0; padding: 28px 30px; border-radius: var(--radius);
+  background: var(--panel); color: var(--panel-ink); border: 1px solid var(--panel-line);
+  position: relative; overflow: hidden;
+}
+.callout::after { content: ""; position: absolute; width: 180px; height: 180px; border-radius: 50%; background: var(--lime); opacity: .18; right: -50px; top: -60px; }
+.callout h3 { margin: 0 0 10px; color: var(--lime); font-size: 1rem; }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+
+/* списки */
+.list { list-style: none; padding: 0; margin: 0 0 1em; }
+.list li { position: relative; padding-left: 30px; margin-bottom: 10px; }
+.list li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.list.good li::before, .list.bad li::before { width: auto; height: auto; background: none; top: 0; left: 4px; font-weight: 600; }
+.list.good li::before { content: "✓"; color: var(--good); }
+.list.bad li::before { content: "✕"; color: var(--bad); }
+.callout .list li::before { background: var(--lime); }
+.callout p, .callout li { position: relative; z-index: 1; }
+
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0 0 1em; display: grid; gap: 12px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 52px 1fr; gap: 16px; align-items: start; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; }
+.steps li::before { content: counter(s); display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; background: var(--lime); color: #0e1220; font-family: "Unbounded", sans-serif; font-weight: 700; }
+
+.shop-list { list-style: none; padding: 0; margin: 0 0 1em; display: grid; gap: 12px; }
+.shop-list li { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 22px; }
+.shop-list b { color: var(--accent); }
+
+/* калькулятор */
+.calc { display: grid; gap: 28px; grid-template-columns: 1.1fr .9fr; margin-top: 26px; padding: 30px; border-radius: 28px; background: var(--card); border: 1px solid var(--line); box-shadow: 0 20px 60px rgba(91, 77, 255, .10); }
+.calc label { display: block; font-weight: 500; font-size: .95rem; margin-bottom: 14px; }
+.calc input[type="number"] { width: 100%; margin-top: 6px; padding: 13px 16px; font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; }
+.calc input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+.result { border-radius: 22px; padding: 26px; background: var(--panel); color: var(--panel-ink); border: 1px solid var(--panel-line); align-self: start; }
+.result small { opacity: .7; }
+.result .sum { font-family: "Unbounded", sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; margin: 6px 0 18px; word-break: break-word; }
+.result .sum.neg { color: #ff8a80; }
+.bar { display: flex; height: 12px; border-radius: 99px; overflow: hidden; background: rgba(128,128,128,.3); margin-bottom: 14px; }
+.bar i { display: block; height: 100%; transition: width .4s; }
+.bar .b1 { background: #8f85ff; } .bar .b2 { background: #ff9d5c; } .bar .b3 { background: var(--lime); }
+.legend { list-style: none; padding: 0; margin: 0 0 14px; font-size: .88rem; display: grid; gap: 4px; }
+.legend li { display: flex; align-items: center; gap: 8px; }
+.legend i { width: 10px; height: 10px; border-radius: 50%; }
+.result p { margin: 0; font-size: .95rem; }
+
+/* тест */
+.quiz { margin-top: 24px; padding: 34px; border-radius: 28px; background: var(--bg); border: 1px solid var(--line); max-width: 780px; }
+.q-top { display: flex; justify-content: space-between; align-items: center; font-size: .9rem; color: var(--muted); margin-bottom: 12px; }
+.q-track { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin-bottom: 26px; }
+.q-track i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .35s; }
+.quiz h3 { margin: 0 0 20px; font-size: 1.3rem; }
+.opts { display: grid; gap: 10px; }
+.opt { display: flex; gap: 14px; align-items: flex-start; text-align: left; width: 100%; font: inherit; color: var(--ink); background: var(--card); border: 1.5px solid var(--line); border-radius: 16px; padding: 14px 18px; cursor: pointer; transition: border-color .2s, background .2s; }
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt .l { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: .9rem; }
+.opt.right { border-color: var(--good); background: color-mix(in srgb, var(--good) 12%, var(--card)); }
+.opt.wrong { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 10%, var(--card)); }
+.opt:disabled { cursor: default; }
+/* текстовые пометки к ответам — чтобы не полагаться только на цвет */
+.opt .mark { margin-left: auto; font-size: .8rem; font-weight: 600; white-space: nowrap; }
+.opt.right .mark { color: var(--good); }
+.opt.wrong .mark { color: var(--bad); }
+.q-next { margin-top: 20px; }
+.q-next .btn { margin-top: 0; border: 0; font: inherit; font-weight: 600; cursor: pointer; }
+.score { font-family: "Unbounded", sans-serif; font-size: 3.4rem; font-weight: 700; color: var(--accent); margin: 4px 0 10px; }
+.score small { font-size: 1.2rem; color: var(--muted); }
+.answers { margin-top: 20px; font-size: .92rem; color: var(--muted); }
+.note { font-size: .92rem; color: var(--muted); margin-top: 18px; }
+
+/* чек-лист */
+.check { list-style: none; padding: 0; margin: 0 0 1em; display: grid; gap: 10px; }
+.check label { display: flex; gap: 14px; align-items: center; cursor: pointer; padding: 15px 20px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; transition: border-color .2s; }
+.check label:hover { border-color: var(--accent); }
+.check input { width: 22px; height: 22px; accent-color: var(--accent); flex: none; }
+.check input:checked + span { text-decoration: line-through; color: var(--muted); }
+.check-status { font-weight: 500; color: var(--good); min-height: 1.6em; }
+
+/* финал */
+.final { background: #0b0e1a; color: #fff; text-align: center; position: relative; overflow: hidden; }
+.final::before { content: ""; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: #5b4dff; filter: blur(110px); opacity: .45; left: 50%; top: -300px; transform: translateX(-50%); }
+.final .wrap { position: relative; }
+.final h2 { margin-inline: auto; max-width: 14em; }
+.final p { max-width: 34em; margin-inline: auto; color: #cfd3e6; }
+.final .big { font-family: "Unbounded", sans-serif; color: var(--lime); font-size: 1.3rem; margin-top: 28px; }
+footer { padding: 28px 0; text-align: center; font-size: .9rem; color: var(--muted); }
+
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
+.reveal.in { opacity: 1; transform: none; }
+
+@media (max-width: 760px) {
+  section { padding: 68px 0; }
+  .hero { padding: 130px 0 80px; }
+  .calc { grid-template-columns: 1fr; padding: 22px; }
+  .quiz { padding: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav class="nav" id="nav" aria-label="Разделы сайта">
+  <a href="#top">Главная</a>
+  <a href="#about">О проекте</a>
+  <a href="#money">Мои деньги</a>
+  <a href="#budget">Мой бюджет</a>
+  <a href="#shop">Умные покупки</a>
+  <a href="#save">Как накопить</a>
+  <a href="#safety">Безопасность</a>
+  <a href="#quiz">Проверь себя</a>
+  <a href="#materials">Материалы</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="badge">Финансовая грамотность для подростков и студентов от 15 лет</span>
+    <h1><span>Живи лучше:</span> учись разумно распоряжаться деньгами</h1>
+    <p class="lead">Деньги — важная часть повседневной жизни. Умение правильно ими распоряжаться помогает избегать ненужных расходов, планировать покупки и достигать поставленных целей.</p>
+    <p class="lead">На этом сайте ты узнаешь, как управлять личным бюджетом, экономить без лишних ограничений, копить на желаемое и защищать свои деньги.</p>
+    <a class="btn" href="#money">Начни разбираться в финансах уже сегодня! →</a>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">О проекте</span>
+      <h2>О чём этот сайт?</h2>
+      <div class="prose">
+        <p>«Живи лучше» — это образовательный сайт, созданный для подростков и студентов, которые хотят научиться грамотно распоряжаться своими деньгами.</p>
+        <p>Здесь собрана полезная информация о планировании бюджета, разумных покупках, накоплениях и финансовой безопасности. Все темы объясняются простым языком и на примерах из повседневной жизни.</p>
+        <p>Наша цель — помочь молодым людям стать более самостоятельными в финансовых вопросах и научиться принимать обдуманные решения.</p>
+      </div>
+    </div>
+
+    <h3 class="reveal">Что ты найдёшь на сайте?</h3>
+    <div class="bento reveal">
+      <a class="tile" href="#money"><span class="num">01</span><b>Мои деньги</b><span>Узнаешь, откуда берутся деньги и на что они обычно тратятся.</span></a>
+      <a class="tile" href="#budget"><span class="num">02</span><b>Мой бюджет</b><span>Разберёшься, как планировать доходы и расходы.</span></a>
+      <a class="tile" href="#shop"><span class="num">03</span><b>Умные покупки</b><span>Научишься избегать ненужных трат и выбирать товары осознанно.</span></a>
+      <a class="tile" href="#save"><span class="num">04</span><b>Как накопить</b><span>Узнаешь, как постепенно откладывать деньги на свои цели.</span></a>
+      <a class="tile" href="#safety"><span class="num">05</span><b>Финансовая безопасность</b><span>Научишься защищать свои деньги и личные данные.</span></a>
+      <a class="tile" href="#quiz"><span class="num">06</span><b>Проверь себя</b><span>Сможешь проверить полученные знания с помощью небольшого теста.</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="money" class="alt">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">01</span>
+      <h2>Мои деньги</h2>
+      <div class="prose">
+        <p>Деньги позволяют нам удовлетворять повседневные потребности, получать новые впечатления и приобретать необходимые вещи. Однако важно не только иметь деньги, но и понимать, как ими распоряжаться.</p>
+      </div>
+    </div>
+
+    <h3>Откуда берутся деньги?</h3>
+    <div class="prose">
+      <p>У подростков и студентов могут быть разные источники дохода. Например, карманные деньги от родителей, стипендия, подарки на праздники или заработок от подработки.</p>
+      <p>Все деньги, которые человек получает за определённый период, называются <b>доходами</b>.</p>
+    </div>
+
+    <h3>На что мы тратим деньги?</h3>
+    <div class="prose">
+      <p>Каждый человек расходует деньги по-разному. Студенты чаще всего тратят их на:</p>
+      <ul class="list">
+        <li>питание и напитки;</li>
+        <li>проезд и транспорт;</li>
+        <li>учёбу и учебные материалы;</li>
+        <li>одежду и личные вещи;</li>
+        <li>развлечения, кафе и встречи с друзьями;</li>
+        <li>хобби и увлечения.</li>
+      </ul>
+      <p>Такие траты называются <b>расходами</b>.</p>
+    </div>
+
+    <h3>Почему важно следить за своими деньгами?</h3>
+    <div class="prose">
+      <p>Иногда деньги заканчиваются быстрее, чем мы ожидаем. Это может происходить из-за частых небольших покупок, незапланированных расходов или отсутствия финансового плана.</p>
+      <p>Если обращать внимание на свои доходы и расходы, становится проще понять, куда уходят деньги, какие траты действительно необходимы и на чём можно сэкономить.</p>
+    </div>
+
+    <div class="callout">
+      <h3>Полезный совет</h3>
+      <p>Попробуй в течение месяца записывать свои расходы. Даже обычные записи в заметках телефона помогут увидеть, на что уходит большая часть денег, и лучше понять свои привычки.</p>
+    </div>
+  </div>
+</section>
+
+<section id="budget">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">02</span>
+      <h2>Мой бюджет</h2>
+      <div class="prose">
+        <p>Личный бюджет — это план доходов и расходов за определённый период, например за неделю или месяц. Он помогает контролировать деньги, распределять их на необходимые нужды и планировать будущие покупки.</p>
+      </div>
+    </div>
+
+    <h3>Что входит в личный бюджет?</h3>
+    <div class="term">
+      <div class="box"><b>Доходы</b><p>Все деньги, которые человек получает. Это могут быть карманные деньги, стипендия, заработок от подработки и подарки.</p></div>
+      <div class="box"><b>Расходы</b><p>Деньги, которые человек тратит на товары, услуги и повседневные потребности.</p></div>
+      <div class="box"><b>Накопления</b><p>Часть денег, которую человек оставляет на будущие цели или непредвиденные ситуации.</p></div>
+    </div>
+
+    <h3>Какие бывают расходы?</h3>
+    <div class="pair">
+      <div class="box"><h3>Обязательные расходы</h3><p>Это траты, без которых сложно обойтись в повседневной жизни. К ним относятся питание, проезд, оплата учёбы и другие необходимые потребности.</p></div>
+      <div class="box"><h3>Необязательные расходы</h3><p>Это покупки и услуги, от которых при необходимости можно отказаться или перенести их на другое время. Например, походы в кафе, развлечения, покупка аксессуаров или новые вещи, которые не являются необходимыми.</p></div>
+    </div>
+
+    <h3>Зачем планировать бюджет?</h3>
+    <div class="prose">
+      <p>Планирование бюджета помогает:</p>
+      <ul class="list good">
+        <li>понимать, сколько денег есть в распоряжении;</li>
+        <li>заранее учитывать необходимые расходы;</li>
+        <li>избегать необдуманных покупок;</li>
+        <li>выделять деньги на личные желания;</li>
+        <li>постепенно накапливать средства на важные цели.</li>
+      </ul>
+    </div>
+
+    <h3>Как правильно распределять деньги?</h3>
+    <div class="prose">
+      <p>В первую очередь стоит учитывать обязательные расходы, чтобы денег хватало на основные потребности. Затем можно определить сумму на развлечения, покупки и другие желания. Если позволяет бюджет, часть дохода можно отложить на накопления.</p>
+      <p>Важно учитывать, что у каждого человека разные доходы и потребности. Поэтому универсального способа распределения денег не существует.</p>
+    </div>
+
+    <h3>Распространённые ошибки</h3>
+    <div class="prose">
+      <ul class="list bad">
+        <li>Тратить деньги сразу после их получения.</li>
+        <li>Не учитывать небольшие ежедневные покупки.</li>
+        <li>Совершать покупки под влиянием эмоций.</li>
+        <li>Не оставлять запас на непредвиденные расходы.</li>
+        <li>Планировать расходы, не учитывая реальные доходы.</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <h3>Главное правило</h3>
+      <p>Бюджет должен соответствовать твоим возможностям. Необязательно отказываться от всех развлечений или покупок, важно находить баланс между необходимыми расходами, личными желаниями и накоплениями.</p>
+    </div>
+
+    <h3>Попробуй спланировать свой бюджет</h3>
+    <div class="prose">
+      <p>Теперь ты знаешь, что входит в личный бюджет. Воспользуйся калькулятором, чтобы распределить условный или собственный месячный доход и увидеть, какая сумма останется после расходов и накоплений.</p>
+    </div>
+
+    <div class="calc">
+      <div>
+        <label>Доход в месяц, ₽<input type="number" id="inc" min="0" step="any" inputmode="decimal" placeholder="Например, 15000"></label>
+        <label>Обязательные расходы, ₽<input type="number" id="must" min="0" step="any" inputmode="decimal" placeholder="Питание, проезд, учёба"></label>
+        <label>Необязательные расходы, ₽<input type="number" id="opt" min="0" step="any" inputmode="decimal" placeholder="Кафе, развлечения, покупки"></label>
+        <label>Накопления, ₽<input type="number" id="sav" min="0" step="any" inputmode="decimal" placeholder="Сколько откладываешь"></label>
+      </div>
+      <div class="result" aria-live="polite">
+        <small>Останется после расходов и накоплений</small>
+        <div class="sum" id="left">0 ₽</div>
+        <div class="bar"><i class="b1" id="bar1"></i><i class="b2" id="bar2"></i><i class="b3" id="bar3"></i></div>
+        <ul class="legend">
+          <li><i style="background:#8f85ff"></i>Обязательные</li>
+          <li><i style="background:#ff9d5c"></i>Необязательные</li>
+          <li><i style="background:var(--lime)"></i>Накопления</li>
+        </ul>
+        <p id="calcMsg">Введи свои данные, чтобы увидеть результат.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="shop" class="alt">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">03</span>
+      <h2>Умные покупки</h2>
+      <div class="prose">
+        <p>Покупки занимают важное место в нашей жизни. Мы регулярно приобретаем продукты, одежду, учебные принадлежности и другие вещи. Однако не каждая покупка действительно необходима. Умный подход к расходам помогает использовать деньги более разумно.</p>
+      </div>
+    </div>
+
+    <h3>Как отличить потребность от желания?</h3>
+    <div class="pair">
+      <div class="box"><h3>Потребность</h3><p>Это то, что необходимо человеку для повседневной жизни. Например, продукты питания, одежда по сезону или учебные материалы.</p></div>
+      <div class="box"><h3>Желание</h3><p>Это то, что хочется приобрести, но без чего можно обойтись. Например, новый аксессуар, дополнительная одежда или очередная покупка для развлечения.</p></div>
+    </div>
+    <div class="prose"><p>Перед покупкой полезно подумать, действительно ли тебе нужна эта вещь или ты просто хочешь её приобрести в данный момент.</p></div>
+
+    <h3>Как совершать разумные покупки?</h3>
+    <ul class="shop-list">
+      <li><b>Составляй список.</b> Перед походом в магазин записывай необходимые товары, чтобы не покупать лишнее.</li>
+      <li><b>Сравнивай цены.</b> Один и тот же товар может стоить по-разному в разных магазинах.</li>
+      <li><b>Обращай внимание на качество.</b> Самый дешёвый товар не всегда оказывается выгодным, если его придётся быстро заменить.</li>
+      <li><b>Не торопись с покупкой.</b> Если вещь не является необходимой, дай себе время подумать.</li>
+      <li><b>Проверяй скидки.</b> Скидка не всегда означает экономию, особенно если товар изначально не был нужен.</li>
+    </ul>
+
+    <h3>Что такое импульсивные покупки?</h3>
+    <div class="prose">
+      <p>Импульсивные покупки — это приобретения, которые совершаются спонтанно, без предварительного обдумывания. Например, покупка ненужной вещи из-за привлекательной рекламы или большой скидки.</p>
+      <p>Чтобы избежать таких трат, можно отложить решение о покупке на некоторое время и ещё раз оценить её необходимость.</p>
+    </div>
+
+    <h3>Как экономить каждый день?</h3>
+    <div class="prose">
+      <p>Экономия не обязательно означает отказ от всего приятного. Можно искать более выгодные варианты, планировать покупки заранее, брать с собой воду или перекус, следить за платными подписками и избегать лишних расходов.</p>
+    </div>
+
+    <div class="callout">
+      <h3>Перед покупкой задай себе вопросы</h3>
+      <ul class="list">
+        <li>Действительно ли мне нужна эта вещь?</li>
+        <li>Есть ли у меня что-то похожее?</li>
+        <li>Могу ли я позволить себе эту покупку?</li>
+        <li>Сравнил ли я цены и качество?</li>
+        <li>Буду ли я пользоваться этой вещью?</li>
+      </ul>
+    </div>
+    <div class="prose"><p>Обдуманные покупки помогают не только экономить деньги, но и лучше понимать собственные потребности.</p></div>
+  </div>
+</section>
+
+<section id="save">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">04</span>
+      <h2>Как накопить?</h2>
+      <div class="prose">
+        <p>Накопления — это деньги, которые человек откладывает для достижения определённой цели или на будущее. Они помогают планировать крупные покупки и чувствовать себя увереннее при возникновении дополнительных расходов.</p>
+      </div>
+    </div>
+
+    <h3>Зачем нужны накопления?</h3>
+    <div class="prose">
+      <p>Накопления могут пригодиться для покупки телефона, ноутбука, поездки, оплаты обучения или другой важной цели. Также полезно иметь некоторый запас денег на непредвиденные ситуации.</p>
+    </div>
+
+    <h3>Как правильно ставить финансовую цель?</h3>
+    <div class="prose">
+      <p>Для начала нужно определить, на что именно ты хочешь накопить. Цель должна быть понятной и реалистичной с учётом твоих возможностей.</p>
+      <p>Например, если ты хочешь приобрести новую технику, заранее узнай её примерную стоимость и подумай, какую сумму сможешь регулярно откладывать.</p>
+    </div>
+
+    <h3>5 шагов к накоплениям</h3>
+    <ol class="steps">
+      <li><div><b>Определи цель.</b> Реши, на что ты хочешь накопить и почему это важно для тебя.</div></li>
+      <li><div><b>Узнай необходимую сумму.</b> Изучи стоимость желаемой покупки или услуги.</div></li>
+      <li><div><b>Оцени свои возможности.</b> Учитывай доходы и обязательные расходы, чтобы откладываемая сумма не мешала повседневной жизни.</div></li>
+      <li><div><b>Регулярно откладывай деньги.</b> Даже небольшие суммы могут постепенно складываться в значительные накопления.</div></li>
+      <li><div><b>Следи за результатом.</b> Записывай, сколько уже удалось отложить, и отмечай свой прогресс.</div></li>
+    </ol>
+
+    <h3>Что мешает копить?</h3>
+    <div class="prose">
+      <p>Частые незапланированные покупки, отсутствие конкретной цели и попытки откладывать слишком большую сумму могут затруднять накопления.</p>
+      <p>Не стоит ставить перед собой недостижимые задачи. Лучше выбрать комфортную сумму, которую получится регулярно откладывать, и при необходимости пересматривать свой план.</p>
+    </div>
+
+    <div class="callout">
+      <h3>Полезный совет</h3>
+      <p>Храни деньги, предназначенные для определённой цели, отдельно от средств на ежедневные расходы, если у тебя есть такая возможность. Это поможет не потратить накопления случайно.</p>
+    </div>
+    <div class="prose"><p><b>Помни:</b> главное в накоплениях — не размер суммы, а последовательность и соответствие твоим возможностям.</p></div>
+  </div>
+</section>
+
+<section id="safety" class="alt">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">05</span>
+      <h2>Финансовая безопасность</h2>
+      <div class="prose">
+        <p>Финансовая безопасность — это умение защищать свои деньги, банковские данные и личную информацию от мошенничества и других угроз.</p>
+        <p>С развитием онлайн-платежей и интернет-магазинов важно знать основные правила безопасного обращения с деньгами.</p>
+      </div>
+    </div>
+
+    <h3>Как защитить банковскую карту?</h3>
+    <div class="prose">
+      <ul class="list good">
+        <li>Никому не сообщай PIN-код, пароли и коды подтверждения из SMS или банковского приложения.</li>
+        <li>Не отправляй фотографии банковской карты посторонним людям.</li>
+        <li>Используй сложные и уникальные пароли для важных аккаунтов.</li>
+        <li>Включи уведомления о банковских операциях, если такая возможность доступна.</li>
+        <li>При потере карты как можно скорее свяжись с банком через официальный канал.</li>
+      </ul>
+    </div>
+
+    <h3>Как распознать мошенников?</h3>
+    <div class="prose">
+      <p>Мошенники могут представляться сотрудниками банка, служб доставки, интернет-магазинов или государственных организаций.</p>
+      <p>Стоит насторожиться, если незнакомый человек:</p>
+      <ul class="list bad">
+        <li>требует срочно сообщить код из SMS;</li>
+        <li>предлагает гарантированный высокий доход без риска;</li>
+        <li>просит перейти по подозрительной ссылке;</li>
+        <li>требует перевести деньги на неизвестный счёт;</li>
+        <li>пытается запугать или заставляет принять решение немедленно.</li>
+      </ul>
+    </div>
+
+    <h3>Безопасность в интернете</h3>
+    <div class="prose">
+      <p>Покупая товары в интернете, проверяй адрес сайта, отзывы и контактную информацию продавца. Не переходи по подозрительным ссылкам из сообщений и не вводи банковские данные на неизвестных страницах.</p>
+      <p>Для покупок лучше использовать проверенные магазины и официальные приложения.</p>
+    </div>
+
+    <h3>Что делать при подозрительной операции?</h3>
+    <div class="prose">
+      <p>Если ты заметил неизвестное списание или подозреваешь, что твои банковские данные стали известны посторонним, сразу обратись в банк через официальное приложение или телефон, указанный на банковской карте или официальном сайте.</p>
+      <p>Если ситуация связана с мошенничеством, сообщи об этом взрослому, которому доверяешь, и при необходимости обратись в правоохранительные органы.</p>
+    </div>
+
+    <div class="callout">
+      <h3>Запомни основные правила</h3>
+      <ul class="list">
+        <li>Не сообщай коды подтверждения посторонним.</li>
+        <li>Не доверяй обещаниям лёгкого и гарантированного заработка.</li>
+        <li>Проверяй ссылки и сайты перед вводом данных.</li>
+        <li>Не торопись переводить деньги по просьбе незнакомцев.</li>
+        <li>Обращайся в банк, если заметил подозрительные действия.</li>
+      </ul>
+    </div>
+    <div class="prose"><p>Твоя финансовая безопасность во многом зависит от внимательности и осторожности при совершении операций.</p></div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">06</span>
+      <h2>Проверь себя</h2>
+      <div class="prose">
+        <p>Насколько хорошо ты разбираешься в финансах? Ответь на вопросы и проверь, насколько хорошо усвоил информацию с сайта.</p>
+      </div>
+    </div>
+    <div class="quiz" id="quizBox" role="group" aria-labelledby="quizTitle"></div>
+    <h2 id="quizTitle" hidden>Тест по финансовой грамотности</h2>
+  </div>
+</section>
+
+<section id="materials" class="alt">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">07</span>
+      <h2>Полезные материалы</h2>
+      <div class="prose">
+        <p>В этом разделе собраны краткие рекомендации, которые помогут применять знания о финансовой грамотности в повседневной жизни.</p>
+      </div>
+    </div>
+
+    <h3>5 правил разумного обращения с деньгами</h3>
+    <ol class="steps">
+      <li><div>Учитывай свои доходы и расходы.</div></li>
+      <li><div>Планируй обязательные покупки заранее.</div></li>
+      <li><div>Избегай необдуманных трат.</div></li>
+      <li><div>Откладывай деньги на важные цели, если это позволяет твой бюджет.</div></li>
+      <li><div>Береги свои банковские данные и не доверяй подозрительным предложениям.</div></li>
+    </ol>
+
+    <h3>Чек-лист перед покупкой</h3>
+    <div class="prose"><p>Перед тем как приобрести товар, проверь:</p></div>
+    <ul class="check" id="checklist">
+      <li><label><input type="checkbox"><span>Действительно ли мне нужна эта вещь?</span></label></li>
+      <li><label><input type="checkbox"><span>Подходит ли её стоимость моему бюджету?</span></label></li>
+      <li><label><input type="checkbox"><span>Есть ли более выгодные варианты?</span></label></li>
+      <li><label><input type="checkbox"><span>Проверил ли я качество товара?</span></label></li>
+      <li><label><input type="checkbox"><span>Не совершаю ли я покупку под влиянием эмоций?</span></label></li>
+    </ul>
+    <div class="check-status" id="checkStatus" aria-live="polite"></div>
+
+    <h3>Главное о финансовой грамотности</h3>
+    <div class="prose">
+      <p>Финансовая грамотность начинается с простых привычек: планирования расходов, обдуманных покупок, разумных накоплений и соблюдения правил безопасности.</p>
+      <p>Даже небольшие изменения в повседневном поведении помогают лучше понимать свои финансовые возможности и самостоятельно принимать решения.</p>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2>Управляй деньгами осознанно!</h2>
+    <p>Финансовая грамотность — это навык, который пригодится на протяжении всей жизни. Чем лучше ты понимаешь свои доходы, расходы и финансовые возможности, тем проще тебе принимать обдуманные решения.</p>
+    <p>Начни с малого: изучай свои расходы, планируй покупки и ставь достижимые цели.</p>
+    <div class="big">Живи лучше — распоряжайся деньгами разумно!</div>
+    <a class="btn" href="#top">Наверх ↑</a>
+  </div>
+</section>
+
+<footer>Живи лучше: учись разумно распоряжаться деньгами</footer>
+
+<script>
+// ---------- индикатор прокрутки и активный пункт меню ----------
+// скролл троттлим через rAF — иначе на каждый пиксель дёргаем DOM
+const progress = document.getElementById('progress');
+const nav = document.getElementById('nav');
+const navLinks = Array.from(nav.querySelectorAll('a'));
+const sections = navLinks.map(a => document.querySelector(a.getAttribute('href')));
+
+let ticking = false;
+function onScroll() {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.transform = 'scaleX(' + (max > 0 ? window.scrollY / max : 0) + ')';
+
+  let current = 0;
+  sections.forEach((sec, i) => {
+    if (sec && sec.getBoundingClientRect().top < window.innerHeight * 0.4) current = i;
+  });
+  navLinks.forEach((a, i) => a.classList.toggle('active', i === current));
+
+  const active = navLinks[current];
+  if (active) {
+    // двигаем только меню по горизонтали, страницу не трогаем
+    nav.scrollLeft = active.offsetLeft - nav.clientWidth / 2 + active.clientWidth / 2;
+  }
+  ticking = false;
+}
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    ticking = true;
+    requestAnimationFrame(onScroll);
+  }
+}, { passive: true });
+onScroll();
+
+// ---------- плавное появление блоков ----------
+const reveals = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+} else {
+  reveals.forEach(el => el.classList.add('in'));
+}
+
+// ---------- калькулятор бюджета ----------
+// TODO: когда-нибудь вынести в отдельный модуль, если появится ещё один калькулятор
+const fields = ['inc', 'must', 'opt', 'sav'].map(id => document.getElementById(id));
+const leftEl = document.getElementById('left');
+const calcMsg = document.getElementById('calcMsg');
+const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
+
+const money = n => Math.round(n).toLocaleString('ru-RU') + ' ₽';
+
+// min="0" в html не мешает вставить -500 руками, поэтому чистим здесь
+function num(field) {
+  const n = parseFloat(field.value);
+  return Number.isFinite(n) && n > 0 ? n : 0;
+}
+
+function recalc() {
+  const [income, must, opt, sav] = fields.map(num);
+  const left = income - must - opt - sav;
+
+  leftEl.textContent = money(left);
+  leftEl.classList.toggle('neg', left < 0);
+
+  // нормируем на сумму трат, а не на max(income, ...) — иначе бар
+  // переполняется, когда расходы больше дохода
+  const spent = must + opt + sav;
+  const total = spent || 1;
+  bars[0].style.width = (must / total * 100) + '%';
+  bars[1].style.width = (opt / total * 100) + '%';
+  bars[2].style.width = (sav / total * 100) + '%';
+
+  if (!income && !spent) {
+    calcMsg.textContent = 'Введи свои данные, чтобы увидеть результат.';
+  } else if (left < 0) {
+    calcMsg.textContent = 'Расходы и накопления больше дохода на ' + money(-left) + '. Попробуй сократить необязательные траты.';
+  } else if (!sav) {
+    calcMsg.textContent = 'Накоплений пока нет. Если получится, отложи хотя бы небольшую сумму.';
+  } else {
+    const pct = income ? Math.round(sav / income * 100) : 0;
+    calcMsg.textContent = 'Ты откладываешь ' + pct + '% дохода. Бюджет сходится.';
+  }
+}
+fields.forEach(f => f.addEventListener('input', recalc));
+recalc(); // сразу считаем нули, чтобы не висел пустой бар
+
+// ---------- тест ----------
+const questions = [
+  { q: 'Что такое личный бюджет?',
+    a: ['Список желаемых покупок.', 'План доходов и расходов.', 'Только сумма денег на банковской карте.'], right: 1 },
+  { q: 'Какие расходы относятся к обязательным?',
+    a: ['Покупка нового аксессуара.', 'Поход в кино.', 'Оплата проезда и необходимые продукты.'], right: 2 },
+  { q: 'Что стоит сделать перед крупной покупкой?',
+    a: ['Сразу приобрести понравившуюся вещь.', 'Сравнить цены и оценить свои возможности.', 'Взять деньги в долг, не оценивая свои возможности.'], right: 1 },
+  { q: 'Для чего нужны накопления?',
+    a: ['Для достижения финансовых целей и будущих расходов.', 'Чтобы обязательно отказаться от всех развлечений.', 'Чтобы потратить все деньги в конце месяца.'], right: 0 },
+  { q: 'Что делать, если незнакомый человек просит код из SMS от банка?',
+    a: ['Сообщить код, если он представился сотрудником банка.', 'Отправить код, если человек торопит.', 'Не сообщать код и обратиться в банк через официальный канал.'], right: 2 },
+  { q: 'Что такое импульсивная покупка?',
+    a: ['Покупка по заранее составленному списку.', 'Спонтанная покупка без предварительного обдумывания.', 'Покупка только необходимых товаров.'], right: 1 },
+  { q: 'Что помогает контролировать расходы?',
+    a: ['Запись и планирование доходов и расходов.', 'Покупки без учёта имеющихся денег.', 'Отказ от подсчёта расходов.'], right: 0 }
+];
+
+const letters = ['А', 'Б', 'В'];
+const box = document.getElementById('quizBox');
+let step = 0;
+let score = 0;
+
+function showQuestion() {
+  const item = questions[step];
+  box.innerHTML = '';
+
+  const top = document.createElement('div');
+  top.className = 'q-top';
+  top.innerHTML = '<span>Вопрос ' + (step + 1) + ' из ' + questions.length + '</span>'
+                + '<span>Баллы: <b id="scoreNow">' + score + '</b></span>';
+  box.appendChild(top);
+
+  const track = document.createElement('div');
+  track.className = 'q-track';
+  track.innerHTML = '<i style="width:' + (step / questions.length * 100) + '%"></i>';
+  box.appendChild(track);
+
+  const h = document.createElement('h3');
+  h.textContent = item.q;
+  box.appendChild(h);
+
+  const opts = document.createElement('div');
+  opts.className = 'opts';
+  item.a.forEach((text, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt';
+    btn.dataset.i = i;
+    btn.innerHTML = '<span class="l">' + letters[i] + '</span><span>' + text + '</span>';
+    btn.addEventListener('click', () => answer(i));
+    opts.appendChild(btn);
+  });
+  box.appendChild(opts);
+
+  const next = document.createElement('div');
+  next.className = 'q-next';
+  next.id = 'qNext';
+  box.appendChild(next);
+}
+
+function answer(picked) {
+  const item = questions[step];
+  const buttons = box.querySelectorAll('.opt');
+
+  buttons.forEach((b, n) => {
+    b.disabled = true;
+    if (n === item.right) {
+      b.classList.add('right');
+      // текстом помечаем — цветом единым сыт не будешь (доступность)
+      b.insertAdjacentHTML('beforeend', '<span class="mark">Верно</span>');
+    } else if (n === picked) {
+      b.classList.add('wrong');
+      b.insertAdjacentHTML('beforeend', '<span class="mark">Неверно</span>');
+    }
+  });
+
+  if (picked === item.right) score++;
+  const scoreNow = document.getElementById('scoreNow');
+  if (scoreNow) scoreNow.textContent = score;
+
+  const last = step === questions.length - 1;
+  const next = document.getElementById('qNext');
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.className = 'btn';
+  nextBtn.textContent = last ? 'Узнать результат' : 'Дальше →';
+  nextBtn.addEventListener('click', () => {
+    step++;
+    last ? showResult() : showQuestion();
+  });
+  next.appendChild(nextBtn);
+  nextBtn.focus();
+}
+
+function verdict(n) {
+  if (n === questions.length) return 'Ты хорошо усвоил основные темы финансовой грамотности.';
+  if (n >= 5) return 'У тебя хорошие знания, но некоторые темы стоит повторить.';
+  if (n >= 3) return 'Попробуй ещё раз изучить разделы сайта.';
+  return 'Начни с основ и пройди тест повторно.';
+}
+
+function showResult() {
+  box.innerHTML = '';
+  box.insertAdjacentHTML('beforeend',
+    '<div class="q-top"><span>Тест завершён</span></div>' +
+    '<div class="q-track"><i style="width:100%"></i></div>' +
+    '<div class="score" aria-live="polite">' + score + '<small> / ' + questions.length + '</small></div>' +
+    '<h3>' + verdict(score) + '</h3>' +
+    '<p class="note">За каждый правильный ответ начисляется 1 балл. Тест носит ознакомительный характер и помогает оценить, насколько хорошо ты усвоил материал.</p>'
+  );
+
+  const again = document.createElement('button');
+  again.type = 'button';
+  again.className = 'btn';
+  again.textContent = 'Пройти ещё раз';
+  again.addEventListener('click', () => {
+    step = 0;
+    score = 0;
+    showQuestion();
+  });
+
+  const wrap = document.createElement('div');
+  wrap.className = 'q-next';
+  wrap.appendChild(again);
+  box.appendChild(wrap);
+  again.focus();
+}
+
+showQuestion();
+
+// ---------- чек-лист ----------
+const checkBoxes = document.querySelectorAll('#checklist input');
+const checkStatus = document.getElementById('checkStatus');
+checkBoxes.forEach(c => {
+  c.addEventListener('change', () => {
+    const done = document.querySelectorAll('#checklist input:checked').length;
+    checkStatus.textContent = done === checkBoxes.length
+      ? 'Все пункты проверены — можно принимать решение.'
+      : '';
+  });
+});
+</script>
+</body>
+</html>
